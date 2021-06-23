@@ -7,5 +7,7 @@ namespace EvaluacionTecnica.Services.Services.Empleado
         List<Domain.Entidades.Empleado> Listar();
 
         List<Domain.Entidades.Empleado> ListarPorApellido(string apellido);
+
+        bool Crear(Domain.Entidades.Empleado nuevoEmpleado);
     }
 }
