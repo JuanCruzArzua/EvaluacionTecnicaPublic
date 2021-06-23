@@ -1,0 +1,68 @@
+﻿@model EvaluacionTecnica.Web.ViewModels.Home.EmpleadosViewModel
+
+<div class="row">
+    <div class="col-md-12">
+        <h1>Lista de Empleados</h1>
+        <button type="button" class="btn btn-info">Nuevo</button>
+        <br />
+        <br />
+        <div class="row">
+            <div class="col-lg-6">
+                @using (Html.BeginForm("Filtrar", "Home", FormMethod.Post))
+                {
+                    @Html.EditorFor(model => model.Busqueda, new { @class = "form-control" })
+                    <button class="btn btn-primary" type="submit">Buscar</button>
+                }
+            </div>
+
+        </div>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Codigo</th>
+                    <th>Apellido</th>
+                    <th>Nombre</th>
+                    <th>Fecha de Alta</th>
+                    <th>Tipo Doc.</th>
+                    <th>Nº de Documento</th>
+                    <th>Accion</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var empleado in Model.Empleados)
+                {
+                    <tr>
+                        <td>
+                            @empleado.Codigo
+                        </td>
+
+                        <td>
+                            @empleado.Apellido
+                        </td>
+
+                        <td>
+                            @empleado.Nombre
+                        </td>
+
+                        <td>
+                            @empleado.FechaAlta
+                        </td>
+
+                        <td>
+                            @empleado.TipoDocumento
+                        </td>
+
+                        <td>
+                            @empleado.NumeroDocumento
+                        </td>
+
+                        <td>
+                            <button type="button" class="btn btn-success">Editar</button>
+                            <button type="button" class="btn btn-danger">Eliminar</button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
