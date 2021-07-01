@@ -3,15 +3,21 @@
 <div class="row">
     <div class="col-md-12">
         <h1>Lista de Empleados</h1>
-        <button type="button" class="btn btn-info">Nuevo</button>
+        <button type="button" class="btn btn-info">
+            <a href="/Home/Create">Nuevo</a>
+        </button>
         <br />
         <br />
         <div class="row">
-            <div class="col-lg-6">
+            <div class="col-md-4">
                 @using (Html.BeginForm("Filtrar", "Home", FormMethod.Post))
                 {
-                    @Html.EditorFor(model => model.Busqueda, new { @class = "form-control" })
-                    <button class="btn btn-primary" type="submit">Buscar</button>
+                    <div class="input-group">
+                        @Html.TextBoxFor(model => model.Busqueda, new { @class = "form-control" })
+                        <span class="input-group-btn">
+                            <button class="btn btn-primary" type="submit">Buscar</button>
+                        </span>
+                    </div>
                 }
             </div>
 

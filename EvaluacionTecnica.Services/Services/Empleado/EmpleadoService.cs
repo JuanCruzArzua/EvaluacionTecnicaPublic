@@ -15,6 +15,23 @@ namespace EvaluacionTecnica.Services.Services.Empleado
         {
             _loggerService = new LoggerService();
         }
+
+        public bool Crear(Domain.Entidades.Empleado nuevoEmpleado)
+        {
+            try
+            {
+                this._context.Empleados.Add(nuevoEmpleado);
+                var resultado = this._context.SaveChanges();
+                return resultado > 0;
+            }
+            catch (System.Exception e)
+            {
+                _loggerService.Registrar("Ocurrió un error listando empleados. Exceplción: " + e);
+
+                return false;
+            }
+        }
+
         public List<Domain.Entidades.Empleado> Listar()
         {
             try

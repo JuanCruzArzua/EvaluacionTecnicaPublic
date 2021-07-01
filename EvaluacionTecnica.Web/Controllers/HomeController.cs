@@ -1,4 +1,5 @@
-﻿using EvaluacionTecnica.Services.Services.Empleado;
+﻿using EvaluacionTecnica.Domain.Entidades;
+using EvaluacionTecnica.Services.Services.Empleado;
 using EvaluacionTecnica.Services.Services.TipoDocumento;
 using EvaluacionTecnica.Web.ViewModels.Home;
 using System;
@@ -45,6 +46,50 @@ namespace EvaluacionTecnica.Web.Controllers
             return View("Index", viewModel);
         }
 
+        public ActionResult Create()
+        {
+            Empleado nuevoEmpleado = new Empleado();
+
+            CompletarTiposDeDocumento();
+            ViewBag.MostrarMensajeError = false;
+
+            return View("Create", nuevoEmpleado);
+        }
+
+        [HttpPost]
+        public ActionResult Create(Empleado empleado)
+        {
+            if (!ModelState.IsValid)
+            {
+                CompletarTiposDeDocumento();
+                return View("Create", empleado);
+            }
+            else
+            {
+                var nuevoEmpleado = new Empleado()
+                {
+                    Apellido = empleado.Apellido,
+                    Nombre = empleado.Nombre,
+                    Codigo = empleado.Codigo,
+                    FechaAlta = empleado.FechaAlta,
+                    NumeroDocumento = empleado.NumeroDocumento,
+                    TipoDocumentoId = empleado.TipoDocumentoId
+                };
+
+                var resultado = this._empleadoService.Crear(nuevoEmpleado);
+
+                if (resultado)
+                {
+                    return RedirectToAction("Index");
+                }
+            }
+
+            CompletarTiposDeDocumento();
+            ViewBag.MostrarMensajeError = true;
+
+            return View("Create", empleado);
+        }
+
         public ActionResult About()
         {
             ViewBag.Message = "Your application description page.";
@@ -57,6 +102,23 @@ namespace EvaluacionTecnica.Web.Controllers
             ViewBag.Message = "Your contact page.";
 
             return View();
+        }
+
+        private void CompletarTiposDeDocumento()
+        {
+            var tiposDeDocumento = _tipoDocumentoService.Listar();
+            List<SelectListItem> opciones = new List<SelectListItem>();
+
+            foreach (var tipoDeDocumento in tiposDeDocumento)
+            {
+                opciones.Add(new SelectListItem
+                {
+                    Text = tipoDeDocumento.Descripcion,
+                    Value = tipoDeDocumento.Id.ToString(),
+                });
+            }
+
+            ViewBag.Opciones = opciones;
         }
 
         private EmpleadosViewModel Map(List<Domain.Entidades.Empleado> empleados)
